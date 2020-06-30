@@ -19,7 +19,6 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('todolist.urls')),
-
-    #url(r'^$', views.index),
+    url(r'^', include('todolist.urls')),
+    #path('api/', include('todolist.urls')),
 ]

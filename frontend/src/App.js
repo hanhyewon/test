@@ -1,16 +1,20 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import { SignIn, SignUp } from './index';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-//import Main from './container/Main';
+import SignIn from './container/SignIn';
+import SignUp from './container/SignUp';
+import Main from './container/Main';
 
 function App() {
 
     return (
-        <div>
-            <Route exact path="/" component={SignIn}/>
-            <Route path="/signUp" component={SignUp}/>
-        </div>
+        <Router>
+            <div>
+                <Route exact path="/" component={SignIn} />
+                <Route path="/signup" component={SignUp} />
+                <Route path="/main" component={Main} /> 
+            </div>
+        </Router>
     )
 }
 

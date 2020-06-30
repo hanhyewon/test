@@ -1,29 +1,51 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import MemberService from "../../service/MemberService";
 
 const SignIn = () => {
-    const [id, setId] = useState('');
-    const [password, setPassword] = useState('');
-
-    const onChangeId = (e) => {
-        setId(e.target.value);
+    const history = useHistory();
+    const initialSigninState = {
+        id: '',
+        password: ''
     };
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
+    const [signin, setSignin] = useState(initialSigninState);
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setSignin({...signin, [name]: value});
+    };
+
+    const clearSignin = () => {
+        setSignin(initialSigninState);
+    };
+
+    const handleSubmit = () => {
+        var data = {
+            id: signin.id,
+            password: signin.password
+        };
+
+        MemberService.signin(data).then(response => {
+            setSignin({
+                id: response.data.id,
+                password: response.data.password
+            });
+            console.log(response.data);
+            clearSignin();
+            history.push("/main");
+        })
+        .catch(e => {
+            console.log(e);
+        });
     };
 
     return ( 
         <div className="form_container">
-            <form>
-                <h1>로그인</h1>
-
-                <input type="text" placeholder="아이디" value={id} onChange={onChangeId} />
-                <input type="password" placeholder="비밀번호" value={password} onChange={onChangePassword} />
-
-                <button className="form_button">로그인</button>
-            </form>
-
-            <Link to="/signUp" className="signUp_link">아직 회원이 아니라면?</Link>
+            <h1>로그인</h1>
+            <input type="text" id="id" name="id" placeholder="아이디" value={signin.id} onChange={handleInputChange} required />
+            <input type="password" id="password" name="password" placeholder="비밀번호" value={signin.password} onChange={handleInputChange} required />
+            <button onClick={handleSubmit} className="form_button">로그인</button>
+            <Link to={"/signUp"} className="signUp_link">아직 회원이 아니라면?</Link>
         </div>
     )
 }
