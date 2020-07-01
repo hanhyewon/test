@@ -35,6 +35,7 @@ const SignIn = () => {
             history.push("/main");
         })
         .catch(e => {
+            alert("등록되지 않은 아이디 또는 비밀번호 입니다");
             console.log(e);
         });
     };
